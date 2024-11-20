@@ -1,0 +1,6 @@
+# Enforce LF for all text files
+* text=auto eol=lf
+
+# Explicitly enforce LF for specific file types
+*.csv text eol=lf
+*.ipynb text eol=lf
