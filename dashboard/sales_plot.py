@@ -58,7 +58,6 @@ def plot_monthly_sales_trend(title, fields, labels):
     fig.update_layout(
         title=title,
         title_font=dict(size=title_fontsize1),
-        # xaxis_title='Year_Month',
         yaxis_title=labels[0],
         yaxis2_title=labels[1],
         showlegend=True,
@@ -67,8 +66,8 @@ def plot_monthly_sales_trend(title, fields, labels):
     )
 
     # Update y-axes properties
-    fig.update_yaxes(title_text=labels[0], secondary_y=False)
-    fig.update_yaxes(title_text=labels[1], secondary_y=True)
+    fig.update_yaxes(title_text=labels[0], showgrid=False, secondary_y=False)
+    fig.update_yaxes(title_text=labels[1], showgrid=False, secondary_y=True)
 
     return fig
 
@@ -101,6 +100,40 @@ def get_top_product_category_data():
     return df_category_top_orders, df_category_top_revenue, df_category_top_unit
 
 
+def get_bottom_product_category_data():
+    # Get sorted category by 'orders' and add rank
+    df_category_bottom_orders = (
+        df_orders_sales_by_product_category
+        .sort_values(by='orders', ascending=True)
+        .reset_index(drop=True)
+    )
+    df_category_bottom_orders['orders_rank'] = range(
+        len(df_category_bottom_orders), 0, -1
+    )
+
+    # Get sorted category by 'revenue' and add rank
+    df_category_bottom_revenue = (
+        df_orders_sales_by_product_category
+        .sort_values(by='revenue', ascending=True)
+        .reset_index(drop=True)
+    )
+    df_category_bottom_revenue['revenue_rank'] = range(
+        len(df_category_bottom_revenue), 0, -1
+    )
+
+    # Get sorted category by 'unit' and add rank
+    df_category_bottom_unit = (
+        df_orders_sales_by_product_category
+        .sort_values(by='unit', ascending=True)
+        .reset_index(drop=True)
+    )
+    df_category_bottom_unit['unit_rank'] = range(
+        len(df_category_bottom_unit), 0, -1
+    )
+
+    return df_category_bottom_orders, df_category_bottom_revenue, df_category_bottom_unit
+
+
 def plot_top_product_category():
     df_category_top_orders, df_category_top_revenue, df_category_top_unit = get_top_product_category_data()
 
@@ -124,6 +157,47 @@ def plot_top_product_category():
             orientation='h',
             marker=dict(color=color_green),
             text=df_category_top10[field_df[0]].apply(lambda x: f'{x:,.0f}'),
+            textposition='outside'
+        )])
+
+        # Update layout
+        fig.update_layout(
+            title=title,
+            title_font=dict(size=title_fontsize2),
+            xaxis=dict(showgrid=False),
+            yaxis=dict(showgrid=False),
+            height=400,
+            margin=dict(l=40, r=40, t=40, b=40),
+        )
+
+        figs.append(fig)
+
+    return figs[0], figs[1], figs[2]
+
+
+def plot_bottom_product_category():
+    df_category_bottom_orders, df_category_bottom_revenue, df_category_bottom_unit = get_bottom_product_category_data()
+
+    title_field_df_dict = {
+        'Product Categories with the Fewest Orders': ['orders', df_category_bottom_orders],
+        'Product Categories with the Lowest Revenue (Brazilian Reais)': ['revenue', df_category_bottom_revenue],
+        'Product Categories with the Fewest Units Sold': ['unit', df_category_bottom_unit],
+    }
+
+    figs = []
+
+    # Reverse the order of the bars
+    for title, field_df in title_field_df_dict.items():
+        df_category_bottom10 = field_df[1][['product_category_name_english', field_df[0], f'{field_df[0]}_rank']].head(10)
+        df_category_bottom10 = df_category_bottom10.sort_values(field_df[0], ascending=False)  # Sort in ascending order for reverse effect
+
+        # Create a horizontal bar chart
+        fig = go.Figure(data=[go.Bar(
+            y=df_category_bottom10['product_category_name_english'],
+            x=df_category_bottom10[field_df[0]],
+            orientation='h',
+            marker=dict(color=color_red),
+            text=df_category_bottom10[field_df[0]].apply(lambda x: f'{x:,.0f}'),
             textposition='outside'
         )])
 
