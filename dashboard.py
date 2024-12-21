@@ -1,5 +1,6 @@
 import streamlit as st
-from dashboard.sales_plot import plot_monthly_sales_trend, plot_top_product_category, plot_bottom_product_category
+from dashboard.sales_plot import (
+    plot_monthly_sales_trend, plot_product_category)
 
 # Set the page title and other configurations
 st.set_page_config(
@@ -43,19 +44,17 @@ with tab2:  # Product Category
     subtab1, subtab2 = st.tabs(subtab_titles)
 
     with subtab1:
-        fig1, fig2, fig3 = plot_top_product_category()
-        # st.write("Top Product Category by Orders")
-        st.plotly_chart(fig1, use_container_width=True)
-        # st.write("Top Product Category by Revenue")
-        st.plotly_chart(fig2, use_container_width=True)
-        # st.write("Top Product Category by Unit")
-        st.plotly_chart(fig3, use_container_width=True)
+        # Get top product category plots
+        top_figs = plot_product_category(order='top')
+        top_fig_orders, top_fig_revenue, top_fig_unit = top_figs
+        st.plotly_chart(top_fig_orders, use_container_width=True)
+        st.plotly_chart(top_fig_revenue, use_container_width=True)
+        st.plotly_chart(top_fig_unit, use_container_width=True)
 
     with subtab2:
-        fig1, fig2, fig3 = plot_bottom_product_category()
-        # st.write("Product Category with Fewest Orders")
-        st.plotly_chart(fig1, use_container_width=True)
-        # st.write("Top Product Category with Lowest Revenue")
-        st.plotly_chart(fig2, use_container_width=True)
-        # st.write("Top Product Category with Fewest Unit Sold")
-        st.plotly_chart(fig3, use_container_width=True)
+        # Get bottom product category plots
+        bottom_figs = plot_product_category(order='bottom')
+        bottom_fig_orders, bottom_fig_revenue, bottom_fig_unit = bottom_figs
+        st.plotly_chart(bottom_fig_orders, use_container_width=True)
+        st.plotly_chart(bottom_fig_revenue, use_container_width=True)
+        st.plotly_chart(bottom_fig_unit, use_container_width=True)
