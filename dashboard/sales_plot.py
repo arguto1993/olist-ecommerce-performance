@@ -107,7 +107,7 @@ def get_product_category_data(order='top'):
     return df_category_orders, df_category_revenue, df_category_unit
 
 
-def plot_product_category(order='top'):
+def plot_product_category(order='top', n=10):
     """
     Plot product category data for top or bottom categories based on orders, revenue, and unit sold.
     """
@@ -118,22 +118,22 @@ def plot_product_category(order='top'):
     color = color_green if order == 'top' else color_red
     if order == 'top':
         title_field_df_dict = {
-            "Top 10 Product Categories by Orders": ['orders', df_category_orders],
-            "Top 10 Product Categories by Revenue (Brazilian Reais)": ['revenue', df_category_revenue],
-            "Top 10 Product Categories by Units Sold": ['unit', df_category_unit],
+            f"Top {n} Product Categories by Orders": ['orders', df_category_orders],
+            f"Top {n} Product Categories by Revenue (Brazilian Reais)": ['revenue', df_category_revenue],
+            f"Top {n} Product Categories by Units Sold": ['unit', df_category_unit],
         }
     else:
         title_field_df_dict = {
-            "10 Product Categories with Fewest Orders": ['orders', df_category_orders],
-            "10 Product Categories with Lowest Revenue (Brazilian Reais)": ['revenue', df_category_revenue],
-            "10 Product Categories with Fewest Unit Sold": ['unit', df_category_unit],
+            f"{n} Product Categories with Fewest Orders": ['orders', df_category_orders],
+            f"{n} Product Categories with Lowest Revenue (Brazilian Reais)": ['revenue', df_category_revenue],
+            f"{n} Product Categories with Fewest Unit Sold": ['unit', df_category_unit],
         }
 
     figs = []
 
     # Plot bar charts
     for title, field_df in title_field_df_dict.items():
-        df_category_10 = field_df[1][['product_category_name_english', field_df[0], f'{field_df[0]}_rank']].head(10)
+        df_category_10 = field_df[1][['product_category_name_english', field_df[0], f'{field_df[0]}_rank']].head(n)
         df_category_10 = df_category_10.sort_values(field_df[0], ascending=(order == 'top'))  # Reverse sorting for bottom categories
 
         # Create a horizontal bar chart
@@ -150,7 +150,9 @@ def plot_product_category(order='top'):
         fig.update_layout(
             title=title,
             title_font=dict(size=title_fontsize2),
-            xaxis=dict(showgrid=False),
+            xaxis=dict(
+                visible=False  # Remove the x-axis entirely, including values
+            ),
             yaxis=dict(showgrid=False),
             height=400,
             margin=dict(l=40, r=40, t=40, b=40),

@@ -4,10 +4,26 @@ from dashboard.sales_plot import (
 
 # Set the page title and other configurations
 st.set_page_config(
-    page_title="Olist Dashboard",  # Set the title for the browser tab
-    page_icon="dashboard/files/favicon.png",  # Optional: set a favicon (use a string or path to an image)
-    layout="wide",  # Optional: layout configuration (wide, centered)
+    page_title="Olist Ecommerce Dashboard",
+    page_icon="dashboard/files/favicon.png",
+    layout="wide",
 )
+
+# Initialize session state for reset functionality
+if 'top_reset' not in st.session_state:
+    st.session_state.top_reset = False
+if 'bottom_reset' not in st.session_state:
+    st.session_state.bottom_reset = False
+
+
+# Reset handlers
+def reset_top():
+    st.session_state.top_reset = True
+
+
+def reset_bottom():
+    st.session_state.bottom_reset = True
+
 
 # Main content
 st.title("Olist E-commerce Performance")
@@ -20,41 +36,57 @@ with tab1:  # Sales Trend
     subtab_titles = ["Revenue & ATV", "Orders & AUR"]
     subtab1, subtab2 = st.tabs(subtab_titles)
 
-    fig1 = plot_monthly_sales_trend(
-        title='Monthly Sales Trend (Revenue & ATV)',
-        fields=['Revenue', 'ATV'],
-        labels=['Revenue (Thousands of Brazilian Reais)', 'ATV (Brazilian Reais)']
-    )
-
-    fig2 = plot_monthly_sales_trend(
-        title='Monthly Sales Trend (Orders & AUR)',
-        fields=['Orders', 'AUR'],
-        labels=['Orders', 'AUR (Brazilian Reais)']
-    )
-
     with subtab1:
-        # st.write("Monthly Sales Trend for Revenue and ATV")
+        fig1 = plot_monthly_sales_trend(
+            title='Monthly Sales Trend (Revenue & ATV)',
+            fields=['Revenue', 'ATV'],
+            labels=['Revenue (Thousands of Brazilian Reais)', 'ATV (Brazilian Reais)']
+        )
         st.plotly_chart(fig1, use_container_width=True)
+
     with subtab2:
-        # st.write("Monthly Sales Trend for Orders and AUR")
+        fig2 = plot_monthly_sales_trend(
+            title='Monthly Sales Trend (Orders & AUR)',
+            fields=['Orders', 'AUR'],
+            labels=['Orders', 'AUR (Brazilian Reais)']
+        )
         st.plotly_chart(fig2, use_container_width=True)
 
 with tab2:  # Product Category
-    subtab_titles = ["Top Sales", "Bottom Sales"]
-    subtab1, subtab2 = st.tabs(subtab_titles)
+    subtab_config = [
+        {"title": "Top Sales", "order": "top"},
+        {"title": "Bottom Sales", "order": "bottom"},
+    ]
+    subtabs = st.tabs([config["title"] for config in subtab_config])
 
-    with subtab1:
-        # Get top product category plots
-        top_figs = plot_product_category(order='top')
-        top_fig_orders, top_fig_revenue, top_fig_unit = top_figs
-        st.plotly_chart(top_fig_orders, use_container_width=True)
-        st.plotly_chart(top_fig_revenue, use_container_width=True)
-        st.plotly_chart(top_fig_unit, use_container_width=True)
+    for subtab, config in zip(subtabs, subtab_config):
+        with subtab:
+            col1, col2 = st.columns([1,2], border=False, gap="small", vertical_alignment="bottom")
 
-    with subtab2:
-        # Get bottom product category plots
-        bottom_figs = plot_product_category(order='bottom')
-        bottom_fig_orders, bottom_fig_revenue, bottom_fig_unit = bottom_figs
-        st.plotly_chart(bottom_fig_orders, use_container_width=True)
-        st.plotly_chart(bottom_fig_revenue, use_container_width=True)
-        st.plotly_chart(bottom_fig_unit, use_container_width=True)
+            with col2:
+                # Handle reset before creating the number_input
+                if st.button("Reset", key=f"reset_{config['order']}", on_click=reset_top if config["order"] == "top" else reset_bottom):
+                    pass
+
+            with col1:
+                # Set the default value based on reset state
+                default_value = 10 if st.session_state.get(f"{config['order']}_reset", False) else st.session_state.get(config["order"], 10)
+
+                # Create the number input
+                n = st.number_input(
+                    f"Set Product Category count to Show",
+                    min_value=1,
+                    max_value=50,
+                    value=default_value,
+                    step=1,
+                    key=config["order"]
+                )
+
+            # Reset the reset flag
+            if st.session_state.get(f"{config['order']}_reset", False):
+                st.session_state[f"{config['order']}_reset"] = False
+
+            # Display the charts
+            figs = plot_product_category(order=config["order"], n=n)
+            for fig in figs:
+                st.plotly_chart(fig, use_container_width=True)
