@@ -1,6 +1,6 @@
-orders
-76505.0
-19784.0
-3866.0
-1528.0
-3.0
+payment_type,orders
+credit_card,76505.0
+boleto,19784.0
+voucher,3866.0
+debit_card,1528.0
+not_defined,3.0

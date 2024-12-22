@@ -1,6 +1,6 @@
 import streamlit as st
-from dashboard.sales_plot import (
-    plot_monthly_sales_trend, plot_product_category)
+from dashboard.sales_plot import plot_monthly_sales_trend, plot_product_category
+from dashboard.payment_plot import plot_payment_type_orders, plot_payment_type_avg_value
 
 # Set the page title and other configurations
 st.set_page_config(
@@ -40,7 +40,7 @@ with tab1:  # Sales Trend
         fig1 = plot_monthly_sales_trend(
             title='Monthly Sales Trend (Revenue & ATV)',
             fields=['Revenue', 'ATV'],
-            labels=['Revenue (Thousands of Brazilian Reais)', 'ATV (Brazilian Reais)']
+            labels=['Revenue (Brazilian Reais)', 'ATV (Brazilian Reais)']
         )
         st.plotly_chart(fig1, use_container_width=True)
 
@@ -86,7 +86,26 @@ with tab2:  # Product Category
             if st.session_state.get(f"{config['order']}_reset", False):
                 st.session_state[f"{config['order']}_reset"] = False
 
-            # Display the charts
+            # Display the charts in 3 columns
             figs = plot_product_category(order=config["order"], n=n)
-            for fig in figs:
-                st.plotly_chart(fig, use_container_width=True)
+            columns = st.columns(3)  # Create 3 columns
+
+            # Iterate through figs and assign each figure to a column
+            for fig, col in zip(figs, columns):
+                with col:
+                    st.plotly_chart(fig, use_container_width=True)
+
+with tab3:  # Payment Types
+    # Create two columns for the plots
+    col1, col2 = st.columns(2)
+
+    with col1:
+        # Display the pie chart
+        fig_pie = plot_payment_type_orders()
+        st.plotly_chart(fig_pie)
+
+    with col2:
+        # Display the bar chart
+        fig_bar = plot_payment_type_avg_value()
+        st.plotly_chart(fig_bar)
+

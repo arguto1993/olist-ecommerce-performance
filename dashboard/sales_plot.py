@@ -1,16 +1,8 @@
 import os
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 from plotly.subplots import make_subplots
-
-# Define colors
-color_green = '#00e656'  # Green
-color_blue = '#0098FF'  # Blue
-color_red = '#FF4B4B'  # Red for negative / bad context
-color_gray = '#CCCCCC'  # Gray for unhighlighted
-title_fontsize1 = 20
-title_fontsize2 = 14
+from .theme import COLOR_GREEN, COLOR_BLUE, COLOR_RED, COLOR_GRAY, TITLE_FONTSIZE1
 
 # Load Dataset
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -35,7 +27,7 @@ def plot_monthly_sales_trend(title, fields, labels):
             y=df_orders_monthly[fields[0]],
             mode='lines+markers',
             name=labels[0],
-            line=dict(color=color_green, width=3),
+            line=dict(color=COLOR_GREEN, width=3),
             marker=dict(symbol='square')
         ),
         secondary_y=False
@@ -48,16 +40,15 @@ def plot_monthly_sales_trend(title, fields, labels):
             y=df_orders_monthly[fields[1]],
             mode='lines+markers',
             name=labels[1],
-            line=dict(color=color_blue, width=3),
+            line=dict(color=COLOR_BLUE, width=3),
             marker=dict(symbol='square')
         ),
         secondary_y=True
     )
 
-    # Update layout with titles and axis labels
     fig.update_layout(
         title=title,
-        title_font=dict(size=title_fontsize1),
+        title_font=dict(size=TITLE_FONTSIZE1),
         yaxis_title=labels[0],
         yaxis2_title=labels[1],
         showlegend=True,
@@ -65,7 +56,6 @@ def plot_monthly_sales_trend(title, fields, labels):
         margin=dict(l=40, r=40, t=40, b=40),
     )
 
-    # Update y-axes properties
     fig.update_yaxes(title_text=labels[0], showgrid=False, secondary_y=False)
     fig.update_yaxes(title_text=labels[1], showgrid=False, secondary_y=True)
 
@@ -111,11 +101,10 @@ def plot_product_category(order='top', n=10):
     """
     Plot product category data for top or bottom categories based on orders, revenue, and unit sold.
     """
-    # Get data
     df_category_orders, df_category_revenue, df_category_unit = get_product_category_data(order=order)
 
     # Define title and fields
-    color = color_green if order == 'top' else color_red
+    color = COLOR_GREEN if order == 'top' else COLOR_RED
     if order == 'top':
         title_field_df_dict = {
             f"Top {n} Product Categories by Orders": ['orders', df_category_orders],
@@ -134,27 +123,45 @@ def plot_product_category(order='top', n=10):
     # Plot bar charts
     for title, field_df in title_field_df_dict.items():
         df_category_10 = field_df[1][['product_category_name_english', field_df[0], f'{field_df[0]}_rank']].head(n)
-        df_category_10 = df_category_10.sort_values(field_df[0], ascending=(order == 'top'))  # Reverse sorting for bottom categories
+        df_category_10 = df_category_10.sort_values(field_df[0], ascending=(order == 'top'))
 
-        # Create a horizontal bar chart
+        # max_value = df_category_10[field_df[0]].max()
+        third_highest_value = df_category_10[field_df[0]].nlargest(3).iloc[-1]
+
+        # Create a horizontal bar chart with dynamic label positioning
         fig = go.Figure(data=[go.Bar(
             y=df_category_10['product_category_name_english'],
             x=df_category_10[field_df[0]],
             orientation='h',
             marker=dict(color=color),
             text=df_category_10[field_df[0]].apply(lambda x: f'{x:,.0f}'),
-            textposition='outside'
+            textposition=df_category_10[field_df[0]].apply(
+                lambda x: 'inside' if x >= third_highest_value else 'outside'
+            ),
+            textfont=dict(
+                color=['black' if x >= third_highest_value else 'white' for x in df_category_10[field_df[0]]],
+                size=12,
+                family=['Arial Black' if x >= third_highest_value else 'Arial' for x in df_category_10[field_df[0]]],
+            )
         )])
 
-        # Update layout
+        # Dynamically calculate height based on number of categories (bars)
+        num_bars = len(df_category_10)
+        bar_height = 40
+        min_height = 300
+        max_height = 800
+        dynamic_height = min(max(bar_height * num_bars, min_height), max_height)
+
         fig.update_layout(
             title=title,
-            title_font=dict(size=title_fontsize1),
-            xaxis=dict(
-                visible=False  # Remove the x-axis entirely, including values
+            title_font=dict(size=TITLE_FONTSIZE1),
+            xaxis=dict(visible=False),  # Remove the x-axis entirely, including values
+            yaxis=dict(
+                showgrid=False,
+                automargin=True,  # Dynamically adjust space for long labels
+                tickfont=dict(size=12)
             ),
-            yaxis=dict(showgrid=False),
-            height=400,
+            height=dynamic_height,
             margin=dict(l=40, r=40, t=40, b=40),
         )
 
