@@ -1,7 +1,7 @@
 import streamlit as st
 from dashboard.sales_plot import plot_monthly_sales_trend, plot_product_category
 from dashboard.payments_plot import plot_payment_type_orders, plot_payment_type_avg_value
-from dashboard.logistics_plot import plot_delivery_status
+from dashboard.logistics_plot import plot_delivery_status, plot_delivery_value_product_category
 
 # Set the page title and other configurations
 st.set_page_config(
@@ -41,7 +41,7 @@ with tab1:  # Sales Trend
         fig1 = plot_monthly_sales_trend(
             title='Monthly Sales Trend (Revenue & ATV)',
             fields=['Revenue', 'ATV'],
-            labels=['Revenue (Brazilian Reais)', 'ATV (Brazilian Reais)']
+            labels=['Revenue (R$)', 'ATV (R$)']
         )
         st.plotly_chart(fig1, use_container_width=True)
 
@@ -49,7 +49,7 @@ with tab1:  # Sales Trend
         fig2 = plot_monthly_sales_trend(
             title='Monthly Sales Trend (Orders & AUR)',
             fields=['Orders', 'AUR'],
-            labels=['Orders', 'AUR (Brazilian Reais)']
+            labels=['Orders', 'AUR (R$)']
         )
         st.plotly_chart(fig2, use_container_width=True)
 
@@ -116,6 +116,7 @@ with tab4:  # Logistics
     with col1:
         fig_pie = plot_delivery_status()
         st.plotly_chart(fig_pie)
-    
+
     with col2:
-        st.text("Boxplot nih ges, sabar dulu")
+        fig_boxes = plot_delivery_value_product_category()
+        st.plotly_chart(fig_boxes)
