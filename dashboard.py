@@ -5,7 +5,7 @@ from dashboard.sales_plot import (
 # Set the page title and other configurations
 st.set_page_config(
     page_title="Olist Ecommerce Dashboard",
-    page_icon="dashboard/files/favicon.png",
+    page_icon="../dashboard/files/favicon.png",
     layout="wide",
 )
 

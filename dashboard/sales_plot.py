@@ -149,7 +149,7 @@ def plot_product_category(order='top', n=10):
         # Update layout
         fig.update_layout(
             title=title,
-            title_font=dict(size=title_fontsize2),
+            title_font=dict(size=title_fontsize1),
             xaxis=dict(
                 visible=False  # Remove the x-axis entirely, including values
             ),
