@@ -108,13 +108,13 @@ def plot_product_category(order='top', n=10):
     if order == 'top':
         title_field_df_dict = {
             f"Top {n} Product Categories by Orders": ['orders', df_category_orders],
-            f"Top {n} Product Categories by Revenue (Brazilian Reais)": ['revenue', df_category_revenue],
+            f"Top {n} Product Categories by Revenue (R$)": ['revenue', df_category_revenue],
             f"Top {n} Product Categories by Units Sold": ['unit', df_category_unit],
         }
     else:
         title_field_df_dict = {
             f"{n} Product Categories with Fewest Orders": ['orders', df_category_orders],
-            f"{n} Product Categories with Lowest Revenue (Brazilian Reais)": ['revenue', df_category_revenue],
+            f"{n} Product Categories with Lowest Revenue (R$)": ['revenue', df_category_revenue],
             f"{n} Product Categories with Fewest Unit Sold": ['unit', df_category_unit],
         }
 

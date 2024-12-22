@@ -1,6 +1,7 @@
 import streamlit as st
 from dashboard.sales_plot import plot_monthly_sales_trend, plot_product_category
-from dashboard.payment_plot import plot_payment_type_orders, plot_payment_type_avg_value
+from dashboard.payments_plot import plot_payment_type_orders, plot_payment_type_avg_value
+from dashboard.logistics_plot import plot_delivery_status
 
 # Set the page title and other configurations
 st.set_page_config(
@@ -17,11 +18,11 @@ if 'bottom_reset' not in st.session_state:
 
 
 # Reset handlers
-def reset_top():
+def reset_top_category():
     st.session_state.top_reset = True
 
 
-def reset_bottom():
+def reset_bottom_category():
     st.session_state.bottom_reset = True
 
 
@@ -65,12 +66,17 @@ with tab2:  # Product Category
 
             with col2:
                 # Handle reset before creating the number_input
-                if st.button("Reset", key=f"reset_{config['order']}", on_click=reset_top if config["order"] == "top" else reset_bottom):
+                if st.button(
+                    "Reset",
+                    key=f"reset_{config['order']}", 
+                    on_click=reset_top_category if config["order"] == "top" else reset_bottom_category
+                ):
                     pass
 
             with col1:
                 # Set the default value based on reset state
-                default_value = 10 if st.session_state.get(f"{config['order']}_reset", False) else st.session_state.get(config["order"], 10)
+                default_value = 10 if st.session_state.get(
+                    f"{config['order']}_reset", False) else st.session_state.get(config["order"], 10)
 
                 # Create the number input
                 n = st.number_input(
@@ -86,26 +92,30 @@ with tab2:  # Product Category
             if st.session_state.get(f"{config['order']}_reset", False):
                 st.session_state[f"{config['order']}_reset"] = False
 
-            # Display the charts in 3 columns
             figs = plot_product_category(order=config["order"], n=n)
-            columns = st.columns(3)  # Create 3 columns
+            columns = st.columns(3)
 
-            # Iterate through figs and assign each figure to a column
             for fig, col in zip(figs, columns):
                 with col:
                     st.plotly_chart(fig, use_container_width=True)
 
 with tab3:  # Payment Types
-    # Create two columns for the plots
     col1, col2 = st.columns(2)
 
     with col1:
-        # Display the pie chart
         fig_pie = plot_payment_type_orders()
         st.plotly_chart(fig_pie)
 
     with col2:
-        # Display the bar chart
         fig_bar = plot_payment_type_avg_value()
         st.plotly_chart(fig_bar)
 
+with tab4:  # Logistics
+    col1, col2 = st.columns(2)
+
+    with col1:
+        fig_pie = plot_delivery_status()
+        st.plotly_chart(fig_pie)
+    
+    with col2:
+        st.text("Boxplot nih ges, sabar dulu")

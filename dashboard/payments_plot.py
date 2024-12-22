@@ -5,8 +5,8 @@ from .theme import COLOR_GREEN, COLOR_BLUE, COLOR_RED, COLOR_GRAY, TITLE_FONTSIZ
 
 # Load Dataset
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-dir_dashboard_dataset = "../dataset/cleaned/"
-df_payments = pd.read_csv(dir_dashboard_dataset + "payments_clean.csv")
+dir_clean_dataset = "../dataset/cleaned/"
+df_payments = pd.read_csv(dir_clean_dataset + "payments_clean.csv")
 
 
 def get_payment_type_orders_data():
@@ -53,7 +53,8 @@ def plot_payment_type_orders():
         labels=pie_labels,
         values=pie_orders,
         textinfo='label+percent+value',
-        insidetextorientation='radial',
+        insidetextorientation='horizontal',
+        textfont=dict(family="Arial", size=12),
         marker=dict(colors=[COLOR_GREEN, COLOR_GRAY])
     )])
 
@@ -87,7 +88,7 @@ def plot_payment_type_avg_value():
         )
 
     fig.update_layout(
-        title="Average Payment Value by Payment Type (Reais)",
+        title="Average Payment Value by Payment Type (R$)",
         titlefont=dict(size=TITLE_FONTSIZE1),
         yaxis=dict(visible=False),  # Remove the y-axis entirely, including values
         showlegend=False
