@@ -1,14 +1,11 @@
-import os
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from .theme import COLOR_GREEN, COLOR_BLUE, COLOR_RED, COLOR_GRAY, TITLE_FONTSIZE1
+from .constants import *
 
 # Load Dataset
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-dir_dashboard_dataset = "../dataset/cleaned_for_dashboard/"
-df_orders_monthly = pd.read_csv(dir_dashboard_dataset + "orders_monthly.csv")
-df_orders_sales_by_product_category = pd.read_csv(dir_dashboard_dataset + "orders_sales_by_product_category.csv")
+df_orders_monthly = pd.read_csv(DIR_DASHBOARD_DATASET + "orders_monthly.csv")
+df_orders_sales_by_product_category = pd.read_csv(DIR_DASHBOARD_DATASET + "orders_sales_by_product_category.csv")
 
 # Ensure 'Year_Month' is in datetime format
 df_orders_monthly['Year_Month'] = pd.to_datetime(df_orders_monthly['Year_Month'])

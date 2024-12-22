@@ -1,7 +1,8 @@
 import streamlit as st
-from dashboard.sales_plot import plot_monthly_sales_trend, plot_product_category
-from dashboard.payments_plot import plot_payment_type_orders, plot_payment_type_avg_value
 from dashboard.logistics_plot import plot_delivery_status, plot_delivery_value_product_category
+from dashboard.payments_plot import plot_payment_type_orders, plot_payment_type_avg_value
+from dashboard.reviews_plot import plot_review_scores
+from dashboard.sales_plot import plot_monthly_sales_trend, plot_product_category
 
 # Set the page title and other configurations
 st.set_page_config(
@@ -80,9 +81,9 @@ with tab2:  # Product Category
 
                 # Create the number input
                 n = st.number_input(
-                    f"Set Product Category count to Show",
+                    f"Set # Product Category to Show",
                     min_value=1,
-                    max_value=50,
+                    max_value=30,
                     value=default_value,
                     step=1,
                     key=config["order"]
@@ -120,3 +121,10 @@ with tab4:  # Logistics
     with col2:
         fig_boxes = plot_delivery_value_product_category()
         st.plotly_chart(fig_boxes)
+
+with tab5:  # Reviews
+    col1, col2, col3 = st.columns([1, 1, 1])
+
+    with col2:  # Center column
+        fig = plot_review_scores()
+        st.plotly_chart(fig, use_container_width=True)

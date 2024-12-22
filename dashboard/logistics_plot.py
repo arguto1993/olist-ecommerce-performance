@@ -1,14 +1,11 @@
-import os
 import pandas as pd
 import plotly.graph_objects as go
-from .theme import COLOR_GREEN, COLOR_BLUE, COLOR_RED, COLOR_GRAY, TITLE_FONTSIZE1
+from .constants import *
 from plotly.subplots import make_subplots
 
 # Load Dataset
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-dir_dashboard_dataset = "../dataset/cleaned_for_dashboard/"
-df_orders_delivered_accuracy = pd.read_csv(dir_dashboard_dataset + "orders_delivered_accuracy.csv")
-df_orders_product_category_freight = pd.read_csv(dir_dashboard_dataset + "orders_product_category_freight.csv")
+df_orders_delivered_accuracy = pd.read_csv(DIR_DASHBOARD_DATASET + "orders_delivered_accuracy.csv")
+df_orders_product_category_freight = pd.read_csv(DIR_DASHBOARD_DATASET + "orders_product_category_freight.csv")
 
 
 def get_orders_delivered_accuracy_data():

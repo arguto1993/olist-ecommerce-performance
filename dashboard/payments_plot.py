@@ -1,12 +1,9 @@
-import os
 import pandas as pd
 import plotly.graph_objects as go
-from .theme import COLOR_GREEN, COLOR_BLUE, COLOR_RED, COLOR_GRAY, TITLE_FONTSIZE1
+from .constants import *
 
 # Load Dataset
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-dir_clean_dataset = "../dataset/cleaned/"
-df_payments = pd.read_csv(dir_clean_dataset + "payments_clean.csv")
+df_payments = pd.read_csv(DIR_CLEAN_DATASET + "payments_clean.csv")
 
 
 def get_payment_type_orders_data():
