@@ -1,20 +1,35 @@
-# **Proyek Analisis Data Dengan Python: Ecommerce Public Dataset**
+# **Olist Ecommerce Performance Analysis**
 
-## Submission Modul Analisis Data dengan Python
+Data Analysis with Python Submission | 
+Dicoding Indonesia Data Science Bootcamp Batch 4 2024
 
-### Dicoding Data Science Bootcamp Batch 4 2024
 
----
+## About the Dataset
 
-## Potential Further Analysis
+This project utilizes the [Brazilian E-commerce Public Dataset Provided by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
 
-### **Metode Pembayaran**
+## Business Questions
 
-*   Bagaimana distribusi jumlah cicilan untuk pembayaran menggunakan kartu kredit?
+### **Sales**  
+1. What are the trends in sales (orders, revenue, units, Average Transaction Value (ATV), Average Unit Revenue (AUR)) over the past few months?  
+2. Which product categories have the highest sales (orders, revenue, units)?  
+3. Which product categories have the lowest sales (orders, revenue, units)?
 
-### **Kepuasan Pelanggan**
+### **Payment Type**  
+4. What is the most frequently used payment method?  
+5. What is the average payment value for each payment method?
 
-*   Kategori produk apa yang memiliki tingkat kepuasan pelanggan tertinggi?
-*   Bagaimana tingkat kepuasan pelanggan berdasarkan lokasi geografis penjual?
-*   Wilayah (kota, state) mana yang memiliki tingkat kepuasan pelanggan tertinggi?
-*   Wilayah (kota, state) mana yang memiliki tingkat kepuasan pelanggan terendah?
+### **Logistics**  
+6. How accurate are the estimated delivery dates compared to the actual delivery dates?  
+7. What are the minimum, maximum, and average shipping costs per product category, both in total and average per order?
+
+### **Customer Satisfaction**  
+8. What is the overall customer satisfaction level?
+
+### **Geolocation**  
+9. How are customers and sellers distributed geographically?
+
+
+## Streamlit Dashboard
+
+Coming Live Soon, please come back later :)
