@@ -1,10 +1,10 @@
 import streamlit as st
 from dashboard.logistics_plot import plot_delivery_status, plot_delivery_value_product_category
-from dashboard.map import map
+# from dashboard.map import map
 from dashboard.payments_plot import plot_payment_type_orders, plot_payment_type_avg_value
 from dashboard.reviews_plot import plot_review_scores
 from dashboard.sales_plot import plot_monthly_sales_trend, plot_product_category
-from streamlit_folium import folium_static
+# from streamlit_folium import folium_static
 
 # Set the page title and other configurations
 st.set_page_config(
@@ -33,8 +33,10 @@ def reset_bottom_category():
 st.title("Olist E-commerce Performance")
 
 # Create tabs
-tab_titles = ["Sales Trend", "Product Category", "Payment Type", "Logistic", "Reviews", "Geolocation"]
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(tab_titles)
+# tab_titles = ["Sales Trend", "Product Category", "Payment Type", "Logistic", "Reviews", "Geolocation"]
+# tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(tab_titles)
+tab_titles = ["Sales Trend", "Product Category", "Payment Type", "Logistic", "Reviews"]
+tab1, tab2, tab3, tab4, tab5 = st.tabs(tab_titles)
 
 with tab1:  # Sales Trend
     subtab_titles = ["Revenue & ATV", "Orders & AUR"]
@@ -131,15 +133,15 @@ with tab5:  # Reviews
         fig = plot_review_scores()
         st.plotly_chart(fig, use_container_width=True)
 
-with tab6:  # Geolocation
-    col1, col2 = st.columns(2)
+# with tab6:  # Geolocation
+#     col1, col2 = st.columns(2)
 
-    with col1:  # Customers
-        st.subheader("Customer Location Distribution")
-        customers_map = map("customers")
-        folium_static(customers_map)
+#     with col1:  # Customers
+#         st.subheader("Customer Location Distribution")
+#         customers_map = map("customers")
+#         folium_static(customers_map)
 
-    with col2:  # Sellers
-        st.subheader("Sellers Location Distribution")
-        sellers_map = map("sellers")
-        folium_static(sellers_map)
+#     with col2:  # Sellers
+#         st.subheader("Sellers Location Distribution")
+#         sellers_map = map("sellers")
+#         folium_static(sellers_map)
