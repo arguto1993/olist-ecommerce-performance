@@ -70,6 +70,8 @@ The notebook includes the following sections:
 
 > **Note**: The geolocation tab is temporarily unavailable due to memory constraints on Streamlit Cloud. Efforts are underway to optimize and re-enable this feature.  
 
+**[Watch Live & Local Dashboard Preview](https://youtu.be/WHZXjThvnz4)**
+
 ## Local Installation Guide
 
 To run the dashboard locally:
