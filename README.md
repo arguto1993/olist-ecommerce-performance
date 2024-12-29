@@ -41,8 +41,9 @@ The notebook includes the following sections:
 ## Dashboard Contents
 
 ### **Sales Trend**  
-- **Line Charts**: Monthly Sales Trend (Revenue & ATV)
-- **Line Charts**: Monthly Sales Trend (Orders, and AUR)  
+- **Line Charts**:
+  - Monthly Sales Trend (Revenue & ATV)
+  - Monthly Sales Trend (Orders, and AUR)  
 
 ### **Product Category**  
 - **Horizontal Bar Charts**:  
@@ -61,14 +62,17 @@ The notebook includes the following sections:
 - **Bar Chart**: Review score frequency distribution.  
 
 ### **Geolocation**  
-- **Map**: Customers Location Distribution
-- **Map**: Sellers Location Distribution
+- **Map**:
+  - Customers Location Distribution
+  - Sellers Location Distribution
 
 ## Live Dashboard
 
 **[Access Live Dashboard Here](https://olist-ecommerce-performance-dashboard.streamlit.app/)**  
 
 > **Note**: The geolocation tab is temporarily unavailable due to memory constraints on Streamlit Cloud. Efforts are underway to optimize and re-enable this feature.  
+
+**[Watch Live & Local Dashboard Preview](https://youtu.be/WHZXjThvnz4)**
 
 ## Local Installation Guide
 
@@ -77,19 +81,19 @@ To run the dashboard locally:
 1. **Clone the Repository**:  
    ```bash
    git clone https://github.com/arguto1993/olist-ecommerce-performance.git
-   cd olist-ecommerce-performance```
+   cd olist-ecommerce-performance
 
 2. **Install Dependencies**:
 
    Ensure you have Python installed. Use the following command to install the required packages:
    ```bash
-   pip install -r requirements.txt```
+   pip install -r requirements.txt
 
 3. **Run the App**:
 
    Launch the Streamlit app with::
    ```bash
-   streamlit run dashboard.py```
+   streamlit run dashboard.py
 
 4. **Access the Dashboard**:
 
